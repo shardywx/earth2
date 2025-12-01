@@ -6,6 +6,7 @@ import copy
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import cdsapi
 import calendar
+import numpy as np
 
 # logging
 LOGFILE = "glofas_download.log"
@@ -14,31 +15,44 @@ logging.basicConfig(level=logging.INFO,
                     handlers=[logging.FileHandler(LOGFILE),
                               logging.StreamHandler()])
 
-# configuration: the specific years/months you requested
-FULL_YEARS = [2017] # years with all months
+def read_cdsapirc(path):
+    """ 
+    Read data from a specified URL using the CDS API 
+    """
+    d = {}
+    with open(path) as f:
+        for line in f:
+            if ':' in line:
+                k, v = line.split(':', 1)
+                d[k.strip()] = v.strip()
+    return d
+cfg = read_cdsapirc('/home/jbanorthwest.co.uk/samhardy/.cdsapirc_cds')
 
-DATASET = "cems-glofas-historical"
-BBOX = [55, -8, 52, -5]  # N W S E
+# configuration: the specific years/months you requested
+FULL_YEARS = np.arange(1980,2025) # years with all months
+
+DATASET = "derived-era5-single-levels-daily-statistics"
+BBOX = [60, -15, 45, 10]  # N W S E
 
 BASE_REQUEST = {
-    "system_version": ["version_4_0"],
-    "variable": ["river_discharge_in_the_last_24_hours"],
-    "hydrological_model": ["lisflood"],
-    "product_type": ["consolidated"], # "product_type": ["control_reforecast"],
+    "variable": ["total_precipitation"],
+    "daily_statistic": ["daily_maximum"], # daily_maximum
+    "product_type": ["reanalysis"],
+    "time_zone": ["utc+00:00"],
+    "frequency": ["1_hourly"], # "1_hourly" for "daily_sum"
     "area": BBOX,
-    "data_format": "grib2",
-    "download_format": "zip",
+    "format": "grib2",
 }
 
 MAX_WORKERS = 10
 MAX_ATTEMPTS = 5
 SLEEP_BETWEEN_SUBMITS = 1
 
-def worker_task(year, month, days, target_dir="/mnt/metdata/W25-2348/glofas/"):
-    client = cdsapi.Client()
+def worker_task(year, month, days, target_dir="/mnt/metdata/W25-2348/era5_daily_stats/1h_max/"):
+    client = cdsapi.Client(url=cfg['url'], key=cfg['key'])
     req = copy.deepcopy(BASE_REQUEST)
-    req.update({"hyear": [str(year)], "hmonth": [month], "hday": days})
-    target_fname = os.path.join(target_dir, f"{DATASET}_{year}_hmonth{month}.zip")
+    req.update({"year": [str(year)], "month": [month], "day": days})
+    target_fname = os.path.join(target_dir, f"{DATASET}_{year}_month{month}.grib2")
     if os.path.exists(target_fname) and os.path.getsize(target_fname) > 0:
         logging.info("Skipping existing file %s", target_fname)
         return target_fname
