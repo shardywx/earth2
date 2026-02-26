@@ -545,23 +545,6 @@ def sanitize_and_write(ds_out,
     return outpath
 
 
-def format_accumulation_str(acc_period):
-    """
-    Format the accumulation period (e.g. 24) into a string for the title (e.g. '24-h').
-    """
-    if acc_period is None:
-        return None
-    # handle numeric values (int, float, numpy numeric types)
-    if isinstance(acc_period, (int, float, np.integer, np.floating)):
-        return f"{int(acc_period)}-h"
-    # convert strings like '48h' or '48 h' to '48-h'
-    s = str(acc_period).strip()
-    # if s is numeric (e.g. '48'), append '-h'
-    if s.isdigit():
-        return f"{int(s)}-h"
-    return s
-
-
 def formatted_uk_and_ireland_plot(ds: xr.DataArray | xr.Dataset,
                                   bbox=[-12, 2.5, 48.0, 60.0],
                                   cmap=get_metpy_colourmap('precipitation')):  

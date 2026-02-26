@@ -12,7 +12,6 @@ def preprocess_era5_rainfall(ds: xr.Dataset,
     """ 
     Pre-process ERA5 rainfall data to be in the correct format for calculating threshold exceedance. This includes:
         - converting units from m to mm
-    TODO: create the correct file structure to import 'plotting_functions' (in the same directory)
     """
 
     # check for singleton time dimensions and squeeze 
