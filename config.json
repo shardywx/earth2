@@ -1,0 +1,46 @@
+{
+    "Desmond" : {
+      "name": "Desmond",
+      "date_str" : "2015-11-23T00",
+      "path": "/mnt/data/sfno/Desmond/",
+      "year" : 2015},
+
+    "Desmond_seed76": {
+      "name": "Desmond",
+      "date_str" : "2015-11-18T00",
+      "path": "/mnt/data/sfno/Desmond_seed76/",
+      "date_expr": "00Z 18 November 2015",
+      "year" : 2015},
+
+    "Desmond_seed76_v2": {
+      "name": "Desmond",
+      "date_str" : "2015-11-18T00",
+      "path": "/mnt/data/sfno/Desmond_seed76_v2/",
+      "date_expr": "00Z 18 November 2015",
+      "year" : 2015},
+  
+    "event_response" : {
+      "name": "event_response",
+      "date_str" : "",
+      "seed": "12",
+      "path": "/mnt/data/sfno/Desmond/event_response/",
+      "year" : 2015},
+
+    "21Aug2015" : {
+      "name": "non_event",
+      "date_str" : "2015-08-21T00",
+      "path": "/mnt/data/sfno/21Aug2015/",
+      "year" : 2015},
+
+    "22Aug2015" : {
+      "name": "non_event",
+      "date_str" : "2015-08-22T00",
+      "path": "/mnt/data/sfno/22Aug2015/",
+      "year" : 2015},
+  
+    "Charley" : {
+      "name": "Charley",
+      "date_str" : "1986-08-20T00",
+      "path": "/mnt/data/sfno/Charley_20Aug1986/",
+      "year" : 1986}
+}
